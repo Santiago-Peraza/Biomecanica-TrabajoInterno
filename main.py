@@ -4,16 +4,26 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.signal as sig
+
+
 file = 'data_proyecto_biomec2020.npy'
+#cargo archivo de datos
 data = np.load(file).item()
 
-
+# recorro los multiples registros de marchas (AUN NO FUNCIONA)
 for reg in data:
+    # Guardo informacion del registro
     info = pd.DataFrame(data['MP_W_065']['info'])
+    
+    # Defino dt y ventana de convolucion
+    dt = 1/info['fs_kin (Hz)'].item()
+    win = np.array([1/(2*dt),0,-1/(2*dt)])
+
     # for paso in reg['model_output_l']:
     paso = data['MP_W_065']['model_output_l'][0]
 
-    # centro de masa relativos
+    # diccionario de centros de masa relativos al CM total 
     relativeCm = {
     'pierna_der_x': paso['cm_pierna_der_x'] - paso['cm_x'],
     'pierna_der_y': paso['cm_pierna_der_y'] - paso['cm_y'],
@@ -67,5 +77,11 @@ for reg in data:
     'cm_y': paso['cm_y'],
     'cm_z': paso['cm_z'],
     }
+    
+    #Creo dataframe de posiciones relativas 
     relativeCm = pd.DataFrame(data = relativeCm)
-# data['MP_W_065']['model_output_l'][0].keys() 
+    #creo dataframe vacio para velocidades relativas
+    relativeVelocity = pd.DataFrame()
+    #realizo convolucion para crear dataframe de velocidades relativas
+    relativeVelocity = relativeCm.transform(lambda x: sig.convolve(x,win,'same'))
+
