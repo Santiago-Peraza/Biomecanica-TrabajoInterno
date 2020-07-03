@@ -11,6 +11,25 @@ file = 'data_proyecto_biomec2020.npy'
 #cargo archivo de datos
 data = np.load(file).item()
 
+
+masa=data['MP_W_065']['info']['mass (kg)'][0]
+# K: 
+    # k_ua : brazo
+    # k_fa :antebrazo
+    # k_t : muslo
+    # k_s : pierna
+    # k_f :pie
+    
+k=pd.DataFrame(data = {'k_ua':[0.322],'k_fa':[0.303],'k_t':[0.323],'k_s':[0.302],'k_f':[0.475]})
+# masas relativas: 
+    #m_ua : brazo
+    #m_fa :antebrazo
+    # m_t : muslo
+    # m_s : pierna
+    # m_f :pie
+
+m_s=pd.DataFrame(data={'m_ua':[masa*0.028],'m_fa':[masa*0.022],'m_t':[masa*0.100],'m_s':[masa*0.0465],'m_f':[masa*0.0145]})
+
 # recorro los multiples registros de marchas (AUN NO FUNCIONA)
 for reg in data:
     # Guardo informacion del registro
