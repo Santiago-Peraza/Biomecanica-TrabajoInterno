@@ -104,22 +104,20 @@ for reg in data:
     relativeVelocity = pd.DataFrame()
     #realizo convolucion para crear dataframe de velocidades relativas
     relativeVelocity = relativeCm.transform(lambda x: sig.convolve(x,win,'same'))
-
+    #creo dataframe de energia cinetica lineal
     linealKinetic= pd.DataFrame(columns=['brazo_der', 'brazo_izq', 'antebrazo_der','antebrazo_izq', 'muslo_der','muslo_izq','pierna_der','pierna_izq', 'pie_der','pie_izq'])
-    # linealKinetic[['brazo_der', 'brazo_izq']] = ((relativeVelocity[['brazo_der_x', 'brazo_der_y', 'brazo_der_z', 'brazo_izq_x',
-    #    'brazo_izq_y', 'brazo_izq_z']]**2 * m_s.m_s.item())/2)
-
-linealKinetic['brazo_der'] = ((relativeVelocity[['brazo_der_x', 'brazo_der_y', 'brazo_der_z']]**2 * m_s.m_ua.item())/2).sum(axis =1)
-linealKinetic['brazo_izq'] = ((relativeVelocity[['brazo_izq_x', 'brazo_izq_y', 'brazo_izq_z']]**2 * m_s.m_ua.item())/2).sum(axis =1)
-
-linealKinetic['antebrazo_der'] = ((relativeVelocity[['antbrazo_der_x', 'antbrazo_der_y', 'antbrazo_der_z']]**2 * m_s.m_fa.item())/2).sum(axis =1)
-linealKinetic['antebrazo_izq'] = ((relativeVelocity[['antbrazo_izq_x', 'antbrazo_izq_y', 'antbrazo_izq_z']]**2 * m_s.m_fa.item())/2).sum(axis =1)
-
-linealKinetic['muslo_der'] = ((relativeVelocity[['muslo_der_x', 'muslo_der_y', 'muslo_der_z']]**2 * m_s.m_t.item())/2).sum(axis =1)
-linealKinetic['muslo_izq'] = ((relativeVelocity[['muslo_izq_x', 'muslo_izq_y', 'muslo_izq_z']]**2 * m_s.m_t.item())/2).sum(axis =1)
-
-linealKinetic['pierna_der'] = ((relativeVelocity[['pierna_der_x', 'pierna_der_y', 'pierna_der_z']]**2 * m_s.m_s.item())/2).sum(axis =1)
-linealKinetic['pierna_izq'] = ((relativeVelocity[['pierna_izq_x', 'pierna_izq_y', 'pierna_izq_z']]**2 * m_s.m_s.item())/2).sum(axis =1)
-
-linealKinetic['pie_der'] = ((relativeVelocity[['pie_der_x', 'pie_der_y', 'pie_der_z']]**2 * m_s.m_f.item())/2).sum(axis =1)
-linealKinetic['pie_izq'] = ((relativeVelocity[['pie_izq_x', 'pie_izq_y', 'pie_izq_z']]**2 * m_s.m_f.item())/2).sum(axis =1)
+    #obtengo energiaC de brazo
+    linealKinetic['brazo_der'] = ((relativeVelocity[['brazo_der_x', 'brazo_der_y', 'brazo_der_z']]**2 * m_s.m_ua.item())/2).sum(axis =1)
+    linealKinetic['brazo_izq'] = ((relativeVelocity[['brazo_izq_x', 'brazo_izq_y', 'brazo_izq_z']]**2 * m_s.m_ua.item())/2).sum(axis =1)
+    #obtengo energiaC de antebrazo
+    linealKinetic['antebrazo_der'] = ((relativeVelocity[['antbrazo_der_x', 'antbrazo_der_y', 'antbrazo_der_z']]**2 * m_s.m_fa.item())/2).sum(axis =1)
+    linealKinetic['antebrazo_izq'] = ((relativeVelocity[['antbrazo_izq_x', 'antbrazo_izq_y', 'antbrazo_izq_z']]**2 * m_s.m_fa.item())/2).sum(axis =1)
+    #obtengo energiaC de muslo
+    linealKinetic['muslo_der'] = ((relativeVelocity[['muslo_der_x', 'muslo_der_y', 'muslo_der_z']]**2 * m_s.m_t.item())/2).sum(axis =1)
+    linealKinetic['muslo_izq'] = ((relativeVelocity[['muslo_izq_x', 'muslo_izq_y', 'muslo_izq_z']]**2 * m_s.m_t.item())/2).sum(axis =1)
+    #obtengo energiaC de pierna
+    linealKinetic['pierna_der'] = ((relativeVelocity[['pierna_der_x', 'pierna_der_y', 'pierna_der_z']]**2 * m_s.m_s.item())/2).sum(axis =1)
+    linealKinetic['pierna_izq'] = ((relativeVelocity[['pierna_izq_x', 'pierna_izq_y', 'pierna_izq_z']]**2 * m_s.m_s.item())/2).sum(axis =1)
+    #obtengo energiaC de pie
+    linealKinetic['pie_der'] = ((relativeVelocity[['pie_der_x', 'pie_der_y', 'pie_der_z']]**2 * m_s.m_f.item())/2).sum(axis =1)
+    linealKinetic['pie_izq'] = ((relativeVelocity[['pie_izq_x', 'pie_izq_y', 'pie_izq_z']]**2 * m_s.m_f.item())/2).sum(axis =1)
