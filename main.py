@@ -13,7 +13,7 @@ data = np.load(file).item()
 
 
 masa=data['MP_W_065']['info']['mass (kg)'][0]
-# K: 
+# K:
     # k_ua : brazo
     # k_fa :antebrazo
     # k_t : muslo
@@ -100,7 +100,7 @@ relativeCm = {
 
 #Creo dataframe de posiciones relativas 
 relativeCm = pd.DataFrame(data = relativeCm)
-relativeCm = relativeCm/10
+relativeCm = relativeCm/1000
 #creo dataframe vacio para velocidades relativas
 relativeVelocity = pd.DataFrame()
 #realizo convolucion para crear dataframe de velocidades relativas
@@ -123,7 +123,48 @@ linealKinetic['pierna_izq'] = ((relativeVelocity[['pierna_izq_x', 'pierna_izq_y'
 linealKinetic['pie_der'] = ((relativeVelocity[['pie_der_x', 'pie_der_y', 'pie_der_z']]**2 * m_s.m_f.item())/2).sum(axis =1)
 linealKinetic['pie_izq'] = ((relativeVelocity[['pie_izq_x', 'pie_izq_y', 'pie_izq_z']]**2 * m_s.m_f.item())/2).sum(axis =1)
 
-
+#reseté indice de dataframe
+linealKinetic.reset_index(inplace = True)
 #externo a for de pasos
-e_rot_l, w = energia_rot(marcadores, info['mass (kg)'].item(),1)
-    
+e_rot = energia_rot(marcadores, info['mass (kg)'].item(), 0)
+#reseté indice de dataframe
+e_rot.reset_index(inplace = True)
+
+
+# se crea dataframe de energia de segmentos
+energiaTotalSegmento = pd.DataFrame(columns=list(linealKinetic.columns))
+energiaTotalSegmento['brazo_der'] =  linealKinetic['brazo_der']+ e_rot['E_b_r']
+energiaTotalSegmento['antebrazo_der'] =  linealKinetic['antebrazo_der']+ e_rot['E_a_r']
+energiaTotalSegmento['muslo_der'] =  linealKinetic['muslo_der']+ e_rot['E_g_r']
+energiaTotalSegmento['pierna_der'] =  linealKinetic['pierna_der']+ e_rot['E_p_r']
+energiaTotalSegmento['pie_der'] =  linealKinetic['pie_der']+ e_rot['E_pie_r']
+
+energiaTotalSegmento['brazo_izq'] =  linealKinetic['brazo_izq']+ e_rot['E_b_l']
+energiaTotalSegmento['antebrazo_izq'] =  linealKinetic['antebrazo_izq']+ e_rot['E_a_l']
+energiaTotalSegmento['muslo_izq'] =  linealKinetic['muslo_izq']+ e_rot['E_g_l']
+energiaTotalSegmento['pierna_izq'] =  linealKinetic['pierna_izq']+ e_rot['E_p_l']
+energiaTotalSegmento['pie_izq'] =  linealKinetic['pie_izq']+ e_rot['E_pie_l']
+
+
+#dataframe de energias totales por miembrp
+energia =pd.DataFrame()
+
+energia['superior_derecho'] = energiaTotalSegmento['brazo_der'] + energiaTotalSegmento['antebrazo_der']
+energia['superior_izquierdo'] = energiaTotalSegmento['brazo_izq'] + energiaTotalSegmento['antebrazo_izq']
+energia['inferior_derecho'] = energiaTotalSegmento['muslo_der'] + energiaTotalSegmento['pierna_der']+ energiaTotalSegmento['pie_der']
+energia['inferior_izquierdo'] = energiaTotalSegmento['muslo_izq'] + energiaTotalSegmento['pierna_izq']+ energiaTotalSegmento['pie_izq']
+
+
+# realizado diff para calcular incrementos positivos
+difEnergia = energia.diff()
+difEnergia.iloc[0] = difEnergia.iloc[1]
+#v=f*l   l=v/f  f=1/periodo
+
+#frecuencia de paso
+f = 1/(difEnergia.shape[0]*dt)
+#largo de paso
+l =(info['vel (km/h)'].item()/3.6)/f
+#trabajo interno por segmento 
+trabajoInternoSegmento= difEnergia.where(difEnergia>0).sum()
+#trabajo interno total
+wInt = trabajoInternoSegmento.sum()/(masa*l)

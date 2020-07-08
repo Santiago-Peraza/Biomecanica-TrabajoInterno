@@ -11,15 +11,10 @@ def energia_rot(aux, masa, n):
     m_mus = masa * 0.100
     m_leg = masa * 0.0465
     m_foo = masa * 0.0145
-
-    start =aux[n].index[0]
+    aux[n]=aux[n]/1000
+    start = aux[n].index[0]
     dt = 0.1
     win = np.array([1 / (2 * dt), 0, -1 / (2 * dt)])
-    E_b = []
-    E_a = []
-    E_g = []
-    E_p = []
-    E_pie = []
 
     d1_r = []
     d2_r = []
@@ -38,12 +33,31 @@ def energia_rot(aux, masa, n):
     b1_r = []
     b2_r = []
     b3_r = []
+
+    d1_l = []
+    d2_l = []
+    d3_l = []
+    d4_l = []
+    d5_l = []
+    d6_l = []
+    d7_l = []
+    d8_l = []
+    d9_l = []
+    d10_l = []
+    d11_l = []
+
+    a1_l = []
+    a2_l = []
+    b1_l = []
+    b2_l = []
+    b3_l = []
+
     h = 0
     
     for i in range(start, start + len(aux[n]['RLOBx'])):
         # LADOS
         
-        
+        #  DERECHA  ####################################################################################################
         d1_r.append(math.sqrt(((aux[n]['RSHx'][i]) - (aux[n]['RELBx'][i])) ** 2 + (
                     (aux[n]['RSHy'][i]) - (aux[n]['RELBy'][i])) ** 2 + (
                                           (aux[n]['RSHz'][i]) - (aux[n]['RELBz'][i])) ** 2))
@@ -91,8 +105,56 @@ def energia_rot(aux, masa, n):
         b3_r.append(math.acos((d9_r[h] ** 2 + d11_r[h] ** 2 - d10_r[h] ** 2) / (2 * d9_r[h] * d11_r[h])) * (
                     180 / math.pi))  # angulo pie
 
+        #  IZQUIERDA  ##################################################################################################
+        d1_l.append(math.sqrt(((aux[n]['LSHx'][i]) - (aux[n]['LELBx'][i])) ** 2 + (
+                    (aux[n]['LSHy'][i]) - (aux[n]['LELBy'][i])) ** 2 + (
+                                          (aux[n]['LSHz'][i]) - (aux[n]['LELBz'][i])) ** 2))
+        d2_l.append(math.sqrt(((aux[n]['LWRx'][i]) - (aux[n]['LELBx'][i])) ** 2 + (
+                    (aux[n]['LWRy'][i]) - (aux[n]['LELBy'][i])) ** 2 + (
+                                          (aux[n]['LWRz'][i]) - (aux[n]['LELBz'][i])) ** 2))
+        d3_l.append(math.sqrt(
+            ((aux[n]['LSHx'][i]) - (aux[n]['LWRx'][i])) ** 2 + ((aux[n]['LSHy'][i]) - (aux[n]['LWRy'][i])) ** 2 + (
+                        (aux[n]['LSHz'][i]) - (aux[n]['LWRz'][i])) ** 2))
+        d4_l.append(math.sqrt(((aux[n]['LGTx'][i]) - (aux[n]['LELBx'][i])) ** 2 + (
+                    (aux[n]['LGTy'][i]) - (aux[n]['LELBy'][i])) ** 2 + (
+                                          (aux[n]['LGTz'][i]) - (aux[n]['LELBz'][i])) ** 2))
+        d5_l.append(math.sqrt(
+            ((aux[n]['LSHx'][i]) - (aux[n]['LGTx'][i])) ** 2 + ((aux[n]['LSHy'][i]) - (aux[n]['LGTy'][i])) ** 2 + (
+                        (aux[n]['LSHz'][i]) - (aux[n]['LGTz'][i])) ** 2))
+        d6_l.append(math.sqrt(
+            ((aux[n]['LSHx'][i]) - (aux[n]['LKNx'][i])) ** 2 + ((aux[n]['LSHy'][i]) - (aux[n]['LKNy'][i])) ** 2 + (
+                        (aux[n]['LSHz'][i]) - (aux[n]['LKNz'][i])) ** 2))
+        d7_l.append(math.sqrt(
+            ((aux[n]['LGTx'][i]) - (aux[n]['LKNx'][i])) ** 2 + ((aux[n]['LGTy'][i]) - (aux[n]['LKNy'][i])) ** 2 + (
+                        (aux[n]['LGTz'][i]) - (aux[n]['LKNz'][i])) ** 2))
+        d8_l.append(math.sqrt(((aux[n]['LGTx'][i]) - (aux[n]['LHEEx'][i])) ** 2 + (
+                    (aux[n]['LGTy'][i]) - (aux[n]['LHEEy'][i])) ** 2 + (
+                                          (aux[n]['LGTz'][i]) - (aux[n]['LHEEz'][i])) ** 2))
+        d9_l.append(math.sqrt(((aux[n]['LHEEx'][i]) - (aux[n]['LKNx'][i])) ** 2 + (
+                    (aux[n]['LHEEy'][i]) - (aux[n]['LKNy'][i])) ** 2 + (
+                                          (aux[n]['LHEEz'][i]) - (aux[n]['LKNz'][i])) ** 2))
+        d10_l.append(math.sqrt(
+            ((aux[n]['LKNx'][i]) - (aux[n]['LMTx'][i])) ** 2 + ((aux[n]['LKNy'][i]) - (aux[n]['LMTy'][i])) ** 2 + (
+                        (aux[n]['LKNz'][i]) - (aux[n]['LMTz'][i])) ** 2))
+        d11_l.append(math.sqrt(((aux[n]['LMTx'][i]) - (aux[n]['LHEEx'][i])) ** 2 + (
+                    (aux[n]['LMTy'][i]) - (aux[n]['LHEEy'][i])) ** 2 + (
+                                           (aux[n]['LMTz'][i]) - (aux[n]['LHEEz'][i])) ** 2))
+
+        # ANGULOS
+        a1_l.append(math.acos((d1_l[h] ** 2 + d2_l[h] ** 2 - d3_l[h] ** 2) / (2 * d1_l[h] * d2_l[h])) * (
+                    180 / math.pi))  # angulo de antebrazo
+        a2_l.append(math.acos((d1_l[h] ** 2 + d5_l[h] ** 2 - d4_l[h] ** 2) / (2 * d1_l[h] * d5_l[h])) * (
+                    180 / math.pi))  # angulo del brazo
+
+        b1_l.append(math.acos((d5_l[h] ** 2 + d7_l[h] ** 2 - d6_l[h] ** 2) / (2 * d5_l[h] * d7_l[h])) * (
+                    180 / math.pi))  # angulo muslo
+        b2_l.append(math.acos((d7_l[h] ** 2 + d9_l[h] ** 2 - d8_l[h] ** 2) / (2 * d7_l[h] * d9_l[h])) * (
+                    180 / math.pi))  # angulo tibia
+        b3_l.append(math.acos((d9_l[h] ** 2 + d11_l[h] ** 2 - d10_l[h] ** 2) / (2 * d9_l[h] * d11_l[h])) * (
+                    180 / math.pi))  # angulo pie
+
         h = h + 1
-    # OMEGA
+    # OMEGA DERECHA
     wa1_r = signal.convolve(a1_r, win, 'same')
     wa1_r[0] = wa1_r[1]
     wa1_r[len(wa1_r)-1] = wa1_r[len(wa1_r)-2]
@@ -113,27 +175,61 @@ def energia_rot(aux, masa, n):
     wb3_r[0] = wb3_r[1]
     wb3_r[len(wb3_r)-1] = wb3_r[len(wb3_r)-2]
 
-    # Energia
-    E_bra = []
-    E_ant = []
-    E_mus = []
-    E_leg = []
-    E_foo = []
+    # OMEGA IZQUIERDA
+    wa1_l = signal.convolve(a1_l, win, 'same')
+    wa1_l[0] = wa1_l[1]
+    wa1_l[len(wa1_l)-1] = wa1_l[len(wa1_l)-2]
+
+    wa2_l = signal.convolve(a2_l, win, 'same')
+    wa2_l[0] = wa2_l[1]
+    wa2_l[len(wa2_l)-1] = wa2_l[len(wa2_l)-2]
+
+    wb1_l = signal.convolve(b1_l, win, 'same')
+    wb1_l[0] = wb1_l[1]
+    wb1_l[len(wb1_l)-1] = wb1_l[len(wb1_l)-2]
+
+    wb2_l = signal.convolve(b2_l, win, 'same')
+    wb2_l[0] = wb2_l[1]
+    wb2_l[len(wb2_l)-1] = wb2_l[len(wb2_l)-2]
+
+    wb3_l = signal.convolve(b3_l, win, 'same')
+    wb3_l[0] = wb3_l[1]
+    wb3_l[len(wb3_l)-1] = wb3_l[len(wb3_l)-2]
+
+    # Energia DERECHA
+    E_bra_r = []
+    E_ant_r = []
+    E_mus_r = []
+    E_leg_r = []
+    E_foo_r = []
     for k in range(0, len(wa1_r)):
-        E_bra.append(0.5 * m_bra * d1_r[k] ** 2 * wa2_r[k] ** 2)
-        E_ant.append(0.5 * m_ant * d2_r[k] ** 2 * wa1_r[k] ** 2)
-        E_mus.append(0.5 * m_mus * d7_r[k] ** 2 * wb1_r[k] ** 2)
-        E_leg.append(0.5 * m_leg * d9_r[k] ** 2 * wb2_r[k] ** 2)
-        E_foo.append(0.5 * m_foo * d11_r[k] ** 2 * wb3_r[k] ** 2)
+        E_bra_r.append(0.5 * m_bra * d1_r[k] ** 2 * wa2_r[k] ** 2)
+        E_ant_r.append(0.5 * m_ant * d2_r[k] ** 2 * wa1_r[k] ** 2)
+        E_mus_r.append(0.5 * m_mus * d7_r[k] ** 2 * wb1_r[k] ** 2)
+        E_leg_r.append(0.5 * m_leg * d9_r[k] ** 2 * wb2_r[k] ** 2)
+        E_foo_r.append(0.5 * m_foo * d11_r[k] ** 2 * wb3_r[k] ** 2)
 
-    E_rot = pd.DataFrame(data={'E_b': E_bra, 'E_a': E_ant, 'E_g': E_mus, 'E_p': E_leg, 'E_pie': E_foo})
-    return E_rot, wb3_r
+    # Energia IZQUIERDA
+    E_bra_l = []
+    E_ant_l = []
+    E_mus_l = []
+    E_leg_l = []
+    E_foo_l = []
+    for k in range(0, len(wa1_l)):
+        E_bra_l.append(0.5 * m_bra * d1_l[k] ** 2 * wa2_l[k] ** 2)
+        E_ant_l.append(0.5 * m_ant * d2_l[k] ** 2 * wa1_l[k] ** 2)
+        E_mus_l.append(0.5 * m_mus * d7_l[k] ** 2 * wb1_l[k] ** 2)
+        E_leg_l.append(0.5 * m_leg * d9_l[k] ** 2 * wb2_l[k] ** 2)
+        E_foo_l.append(0.5 * m_foo * d11_l[k] ** 2 * wb3_l[k] ** 2)
 
-# file = 'data_proyecto_biomec2020.npy'
-# data = np.load(file, allow_pickle=True).item()
-# datos_l = data['MP_W_065']['kinematic_l']
-# m_l = data['MP_W_065']['info']['mass (kg)'][0]
+    E_rot = pd.DataFrame(data={'E_b_r': E_bra_r, 'E_a_r': E_ant_r, 'E_g_r': E_mus_r, 'E_p_r': E_leg_r, 'E_pie_r': E_foo_l, 'E_b_l': E_bra_l, 'E_a_l': E_ant_l, 'E_g_l': E_mus_l, 'E_p_l': E_leg_l, 'E_pie_l': E_foo_l})
+    return E_rot
 
-# e_rot_l = energia_rot(datos_l, m_l, 0)
 
-# print(e_rot_l)
+file = 'data_proyecto_biomec2020.npy'
+data = np.load(file, allow_pickle=True).item()
+datos = data['MP_W_065']['kinematic_l']
+m = data['MP_W_065']['info']['mass (kg)'][0]
+
+e_rot = energia_rot(datos, m, 0)
+
