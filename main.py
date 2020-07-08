@@ -105,6 +105,8 @@ relativeCm = relativeCm/1000
 relativeVelocity = pd.DataFrame()
 #realizo convolucion para crear dataframe de velocidades relativas
 relativeVelocity = relativeCm.transform(lambda x: sig.convolve(x,win,'same'))
+relativeVelocity.iloc[0] = relativeVelocity.iloc[1]
+relativeVelocity.iloc[-1] = relativeVelocity.iloc[-2]
 #creo dataframe de energia cinetica lineal
 linealKinetic= pd.DataFrame(columns=['brazo_der', 'brazo_izq', 'antebrazo_der','antebrazo_izq', 'muslo_der','muslo_izq','pierna_der','pierna_izq', 'pie_der','pie_izq'])
 #obtengo energiaC de brazo

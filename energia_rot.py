@@ -11,9 +11,9 @@ def energia_rot(aux, masa, n):
     m_mus = masa * 0.100
     m_leg = masa * 0.0465
     m_foo = masa * 0.0145
-    aux[n]=aux[n]/1000
+    aux[n] = aux[n]/1000
     start = aux[n].index[0]
-    dt = 0.1
+    dt = 0.01
     win = np.array([1 / (2 * dt), 0, -1 / (2 * dt)])
 
     d1_r = []
@@ -93,17 +93,12 @@ def energia_rot(aux, masa, n):
                                            (aux[n]['RMTz'][i]) - (aux[n]['RHEEz'][i])) ** 2))
 
         # ANGULOS
-        a1_r.append(math.acos((d1_r[h] ** 2 + d2_r[h] ** 2 - d3_r[h] ** 2) / (2 * d1_r[h] * d2_r[h])) * (
-                    180 / math.pi))  # angulo de antebrazo
-        a2_r.append(math.acos((d1_r[h] ** 2 + d5_r[h] ** 2 - d4_r[h] ** 2) / (2 * d1_r[h] * d5_r[h])) * (
-                    180 / math.pi))  # angulo del brazo
+        a1_r.append(math.acos((d1_r[h] ** 2 + d2_r[h] ** 2 - d3_r[h] ** 2) / (2 * d1_r[h] * d2_r[h])))  # angulo de antebrazo
+        a2_r.append(math.acos((d1_r[h] ** 2 + d5_r[h] ** 2 - d4_r[h] ** 2) / (2 * d1_r[h] * d5_r[h]))) # angulo del brazo
 
-        b1_r.append(math.acos((d5_r[h] ** 2 + d7_r[h] ** 2 - d6_r[h] ** 2) / (2 * d5_r[h] * d7_r[h])) * (
-                    180 / math.pi))  # angulo muslo
-        b2_r.append(math.acos((d7_r[h] ** 2 + d9_r[h] ** 2 - d8_r[h] ** 2) / (2 * d7_r[h] * d9_r[h])) * (
-                    180 / math.pi))  # angulo tibia
-        b3_r.append(math.acos((d9_r[h] ** 2 + d11_r[h] ** 2 - d10_r[h] ** 2) / (2 * d9_r[h] * d11_r[h])) * (
-                    180 / math.pi))  # angulo pie
+        b1_r.append(math.acos((d5_r[h] ** 2 + d7_r[h] ** 2 - d6_r[h] ** 2) / (2 * d5_r[h] * d7_r[h]))) # angulo muslo
+        b2_r.append(math.acos((d7_r[h] ** 2 + d9_r[h] ** 2 - d8_r[h] ** 2) / (2 * d7_r[h] * d9_r[h])))  # angulo tibia
+        b3_r.append(math.acos((d9_r[h] ** 2 + d11_r[h] ** 2 - d10_r[h] ** 2) / (2 * d9_r[h] * d11_r[h]))) # angulo pie
 
         #  IZQUIERDA  ##################################################################################################
         d1_l.append(math.sqrt(((aux[n]['LSHx'][i]) - (aux[n]['LELBx'][i])) ** 2 + (
@@ -141,17 +136,12 @@ def energia_rot(aux, masa, n):
                                            (aux[n]['LMTz'][i]) - (aux[n]['LHEEz'][i])) ** 2))
 
         # ANGULOS
-        a1_l.append(math.acos((d1_l[h] ** 2 + d2_l[h] ** 2 - d3_l[h] ** 2) / (2 * d1_l[h] * d2_l[h])) * (
-                    180 / math.pi))  # angulo de antebrazo
-        a2_l.append(math.acos((d1_l[h] ** 2 + d5_l[h] ** 2 - d4_l[h] ** 2) / (2 * d1_l[h] * d5_l[h])) * (
-                    180 / math.pi))  # angulo del brazo
+        a1_l.append(math.acos((d1_l[h] ** 2 + d2_l[h] ** 2 - d3_l[h] ** 2) / (2 * d1_l[h] * d2_l[h])))  # angulo de antebrazo
+        a2_l.append(math.acos((d1_l[h] ** 2 + d5_l[h] ** 2 - d4_l[h] ** 2) / (2 * d1_l[h] * d5_l[h]))) # angulo del brazo
 
-        b1_l.append(math.acos((d5_l[h] ** 2 + d7_l[h] ** 2 - d6_l[h] ** 2) / (2 * d5_l[h] * d7_l[h])) * (
-                    180 / math.pi))  # angulo muslo
-        b2_l.append(math.acos((d7_l[h] ** 2 + d9_l[h] ** 2 - d8_l[h] ** 2) / (2 * d7_l[h] * d9_l[h])) * (
-                    180 / math.pi))  # angulo tibia
-        b3_l.append(math.acos((d9_l[h] ** 2 + d11_l[h] ** 2 - d10_l[h] ** 2) / (2 * d9_l[h] * d11_l[h])) * (
-                    180 / math.pi))  # angulo pie
+        b1_l.append(math.acos((d5_l[h] ** 2 + d7_l[h] ** 2 - d6_l[h] ** 2) / (2 * d5_l[h] * d7_l[h])))  # angulo muslo
+        b2_l.append(math.acos((d7_l[h] ** 2 + d9_l[h] ** 2 - d8_l[h] ** 2) / (2 * d7_l[h] * d9_l[h])))  # angulo tibia
+        b3_l.append(math.acos((d9_l[h] ** 2 + d11_l[h] ** 2 - d10_l[h] ** 2) / (2 * d9_l[h] * d11_l[h])))  # angulo pie
 
         h = h + 1
     # OMEGA DERECHA
@@ -226,10 +216,10 @@ def energia_rot(aux, masa, n):
     return E_rot
 
 
-file = 'data_proyecto_biomec2020.npy'
-data = np.load(file, allow_pickle=True).item()
-datos = data['MP_W_065']['kinematic_l']
-m = data['MP_W_065']['info']['mass (kg)'][0]
-
-e_rot = energia_rot(datos, m, 0)
+# file = 'data_proyecto_biomec2020.npy'
+# data = np.load(file, allow_pickle=True).item()
+# datos = data['MP_W_065']['kinematic_l']
+# m = data['MP_W_065']['info']['mass (kg)'][0]
+#
+# e_rot = energia_rot(datos, m, 0)
 
