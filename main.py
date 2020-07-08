@@ -125,5 +125,5 @@ linealKinetic['pie_izq'] = ((relativeVelocity[['pie_izq_x', 'pie_izq_y', 'pie_iz
 
 
 #externo a for de pasos
-e_rot_l = energia_rot(marcadores, info['mass (kg)'].item())
+e_rot_l, w = energia_rot(marcadores, info['mass (kg)'].item(),1)
     
