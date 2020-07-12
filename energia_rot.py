@@ -11,10 +11,20 @@ def energia_rot(aux, masa, n):
     m_mus = masa * 0.100
     m_leg = masa * 0.0465
     m_foo = masa * 0.0145
+
+    # radios de giro
+    k_b = 0.322
+    k_a = 0.303
+    k_m = 0.323
+    k_l = 0.302
+    k_f = 0.475
+
     aux[n] = aux[n]/1000
     start = aux[n].index[0]
     dt = 0.01
     win = np.array([1 / (2 * dt), 0, -1 / (2 * dt)])
+    # win2 = np.array([1 / (2 * 0.1), 0, -1 / (2 * 0.1)])
+    # print(win, win2)
 
     d1_r = []
     d2_r = []
@@ -193,11 +203,11 @@ def energia_rot(aux, masa, n):
     E_leg_r = []
     E_foo_r = []
     for k in range(0, len(wa1_r)):
-        E_bra_r.append(0.5 * m_bra * d1_r[k] ** 2 * wa2_r[k] ** 2)
-        E_ant_r.append(0.5 * m_ant * d2_r[k] ** 2 * wa1_r[k] ** 2)
-        E_mus_r.append(0.5 * m_mus * d7_r[k] ** 2 * wb1_r[k] ** 2)
-        E_leg_r.append(0.5 * m_leg * d9_r[k] ** 2 * wb2_r[k] ** 2)
-        E_foo_r.append(0.5 * m_foo * d11_r[k] ** 2 * wb3_r[k] ** 2)
+        E_bra_r.append(0.5 * m_bra * k_b ** 2 * wa2_r[k] ** 1)
+        E_ant_r.append(0.5 * m_ant * k_a ** 2 * wa1_r[k] ** 1)
+        E_mus_r.append(0.5 * m_mus * k_m ** 2 * wb1_r[k] ** 1)
+        E_leg_r.append(0.5 * m_leg * k_l ** 2 * wb2_r[k] ** 1)
+        E_foo_r.append(0.5 * m_foo * k_f ** 2 * wb3_r[k] ** 1)
 
     # Energia IZQUIERDA
     E_bra_l = []
@@ -206,20 +216,22 @@ def energia_rot(aux, masa, n):
     E_leg_l = []
     E_foo_l = []
     for k in range(0, len(wa1_l)):
-        E_bra_l.append(0.5 * m_bra * d1_l[k] ** 2 * wa2_l[k] ** 2)
-        E_ant_l.append(0.5 * m_ant * d2_l[k] ** 2 * wa1_l[k] ** 2)
-        E_mus_l.append(0.5 * m_mus * d7_l[k] ** 2 * wb1_l[k] ** 2)
-        E_leg_l.append(0.5 * m_leg * d9_l[k] ** 2 * wb2_l[k] ** 2)
-        E_foo_l.append(0.5 * m_foo * d11_l[k] ** 2 * wb3_l[k] ** 2)
+        E_bra_l.append(0.5 * m_bra * k_b ** 2 * wa2_l[k] ** 1)
+        E_ant_l.append(0.5 * m_ant * k_a ** 2 * wa1_l[k] ** 1)
+        E_mus_l.append(0.5 * m_mus * k_m ** 2 * wb1_l[k] ** 1)
+        E_leg_l.append(0.5 * m_leg * k_l ** 2 * wb2_l[k] ** 1)
+        E_foo_l.append(0.5 * m_foo * k_f ** 2 * wb3_l[k] ** 1)
+    # print(d11_l)
 
     E_rot = pd.DataFrame(data={'E_b_r': E_bra_r, 'E_a_r': E_ant_r, 'E_g_r': E_mus_r, 'E_p_r': E_leg_r, 'E_pie_r': E_foo_l, 'E_b_l': E_bra_l, 'E_a_l': E_ant_l, 'E_g_l': E_mus_l, 'E_p_l': E_leg_l, 'E_pie_l': E_foo_l})
     return E_rot
 
 
-# file = 'data_proyecto_biomec2020.npy'
-# data = np.load(file, allow_pickle=True).item()
-# datos = data['MP_W_065']['kinematic_l']
-# m = data['MP_W_065']['info']['mass (kg)'][0]
-#
-# e_rot = energia_rot(datos, m, 0)
+
+file = 'data_proyecto_biomec2020.npy'
+data = np.load(file, allow_pickle=True).item()
+datos = data['MP_W_065']['kinematic_l']
+m = data['MP_W_065']['info']['mass (kg)'][0]
+
+e_rot = energia_rot(datos, m, 0)
 

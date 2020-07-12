@@ -45,7 +45,7 @@ for reg in list(data.keys()):
         # for reg in data:
         # Guardo informacion del registro
         info = pd.DataFrame(data[reg]['info'])
-        print(info)
+        # print(info)
         # Defino dt y ventana de convolucion
         dt = 1/info['fs_kin (Hz)'].item()
         win = np.array([1/(2*dt),0,-1/(2*dt)])
