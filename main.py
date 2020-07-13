@@ -1,12 +1,16 @@
 # Biomecanica trabajo final
 
-
+# import threading
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.signal as sig
 from energia_rot import energia_rot
+import logging
 
+
+#creo formato de log a mostrar en la iteracion
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] (%(threadName)-s) %(message)s')
 file = 'data_proyecto_biomec2020.npy'
 #cargo archivo de datos
 
@@ -41,16 +45,16 @@ for reg in list(data.keys()):
         
         m_s=pd.DataFrame(data={'m_ua':[masa*0.028],'m_fa':[masa*0.022],'m_t':[masa*0.100],'m_s':[masa*0.0465],'m_f':[masa*0.0145]})
 
-        # recorro los multiples registros de marchas (AUN NO FUNCIONA)
-        # for reg in data:
+        
+        
         # Guardo informacion del registro
         info = pd.DataFrame(data[reg]['info'])
-        # print(info)
+       
         # Defino dt y ventana de convolucion
         dt = 1/info['fs_kin (Hz)'].item()
         win = np.array([1/(2*dt),0,-1/(2*dt)])
-
-        
+        #mensaje log de informacion (es mas optimo que un print)
+        logging.info("Calculando registro:"+str(reg))
 
         for i in range(0,15):
             # guardo un paso 
@@ -144,6 +148,8 @@ for reg in list(data.keys()):
             linealKinetic.reset_index(inplace = True)
             #externo a for de pasos
             e_rot = energia_rot(marcadores, info['mass (kg)'].item(), 0)
+
+           
             #reseté indice de dataframe
             e_rot.reset_index(inplace = True)
 
