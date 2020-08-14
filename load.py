@@ -61,7 +61,7 @@ for vel in velocidadR:
     marcha = marcha.append(insert,ignore_index=True)
 
 #defino tamaño figura
-figsize = (10,6)
+figsize = (14,10)
 #gra#grafico marcha Sfico marcha S
 plt.figure(figsize=figsize)
 plt.title('Marcha S')
@@ -89,12 +89,14 @@ plt.savefig('Trabajo_R.png')
 
 #grafico marchas conjuntas
 plt.figure(figsize=(figsize))
-plt.title('Marchas')
-plt.errorbar(velocidadR,marcha.Promedio.where(marcha.Marcha == 'r').dropna(),marcha.Desv.where(marcha.Marcha == 'r').dropna(),linestyle = 'None',marker = '^', ecolor='g')
-plt.errorbar(velocidadS,marcha.Promedio.where(marcha.Marcha == 's').dropna(),marcha.Desv.where(marcha.Marcha == 's').dropna(),linestyle = 'None',marker = '^', ecolor='r')
-plt.errorbar(velocidadW,marcha.Promedio.where(marcha.Marcha == 'w').dropna(),marcha.Desv.where(marcha.Marcha == 'w').dropna(),linestyle = 'None',marker = '^', ecolor='b')
+# plt.title('Marchas')
+plt.errorbar(velocidadR,marcha.Promedio.where(marcha.Marcha == 'r').dropna(),marcha.Desv.where(marcha.Marcha == 'r').dropna(),linestyle = 'None',marker = '^', ecolor='g',mfc='green', mec= 'green',ms=10,label = 'Carrera')
+plt.errorbar(velocidadS,marcha.Promedio.where(marcha.Marcha == 's').dropna(),marcha.Desv.where(marcha.Marcha == 's').dropna(),linestyle = 'None',marker = '^', ecolor='r',mfc='red', mec= 'red',ms=10,label = 'Galope')
+plt.errorbar(velocidadW,marcha.Promedio.where(marcha.Marcha == 'w').dropna(),marcha.Desv.where(marcha.Marcha == 'w').dropna(),linestyle = 'None',marker = '^', ecolor='b',mfc='blue',mec = 'blue',ms=10,label = 'Marcha')
+plt.legend(loc = 'lower right')
 plt.xlabel('Velocidad (km/h)')
-plt.ylabel('Trabajo')
-plt.savefig('Trabajo_totaldemarchas.png')
+plt.ylabel('Trabajo (J)')
+
+plt.savefig('Trabajo_totaldemarchas.png', bbox_inches='tight')
 
 plt.show()

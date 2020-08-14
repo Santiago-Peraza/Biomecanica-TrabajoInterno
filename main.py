@@ -7,14 +7,15 @@ import matplotlib.pyplot as plt
 import scipy.signal as sig
 from energia_rot import energia_rot
 import logging
-
-
+from time import time
+from concurrent.futures import ThreadPoolExecutor
+executor = ThreadPoolExecutor(max_workers = 2)
 #creo formato de log a mostrar en la iteracion
 logging.basicConfig(level=logging.INFO, format='[%(levelname)s] (%(threadName)-s) %(message)s')
 file = 'data_proyecto_biomec2020.npy'
 #cargo archivo de datos
-
-data = np.load(file).item()
+start_time = time()
+data = np.load(file, allow_pickle=True).item()
 #declaro un dataframe vacio para el trabajo total
 totalWork = pd.DataFrame(columns=['Nombre','Masa','Marcha', 'Velocidad', 'Paso', 'Trabajo'])
 
@@ -61,6 +62,14 @@ for reg in list(data.keys()):
             paso = data[reg]['model_output_l'][i]
             # guardo el total de marcadores
             marcadores =data[reg]['kinematic_l']
+
+            #externo a for de pasos
+            # e_rot = energia_rot(marcadores, info['mass (kg)'].item(), 0)
+            thread_1 = executor.submit(energia_rot,marcadores,info['mass (kg)'].item(),0)
+            e_rot=thread_1.result()
+            #reseté indice de dataframe
+            e_rot.reset_index(inplace = True)
+
 
             # diccionario de centros de masa relativos al CM total 
             relativeCm = {
@@ -146,12 +155,7 @@ for reg in list(data.keys()):
 
             #reseté indice de dataframe
             linealKinetic.reset_index(inplace = True)
-            #externo a for de pasos
-            e_rot = energia_rot(marcadores, info['mass (kg)'].item(), 0)
-
-           
-            #reseté indice de dataframe
-            e_rot.reset_index(inplace = True)
+            
 
 
             # se crea dataframe de energia de segmentos
@@ -198,3 +202,5 @@ for reg in list(data.keys()):
 
 # se exporta el total de trabajos calculados
 totalWork.to_pickle('totalWork.pkl')
+final_time = time()-start_time
+print("Tiempo transc: %0.10f seconds." %final_time)
